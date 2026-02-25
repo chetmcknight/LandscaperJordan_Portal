@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { ToastProvider } from '@/components/providers/toast-provider'
+import { ThemeProvider } from '@/components/providers/theme-provider'
 import { Sidebar } from '@/components/layout/sidebar'
 import { BottomNav } from '@/components/layout/bottom-nav'
 import { Dashboard } from '@/components/features/dashboard'
@@ -70,37 +71,39 @@ export default function Home() {
   }
 
   return (
-    <ToastProvider>
-      {screen === 'login' ? (
-        <Login onLogin={handleLogin} />
-      ) : (
-        <div className="flex flex-col h-screen overflow-hidden bg-gray-50">
-          {!online && (
-            <div className="flex items-center justify-center gap-2 py-2 text-xs font-bold text-white bg-red-500 animate-pulse">
-              📵 Offline — changes sync when reconnected
-            </div>
-          )}
-          <div className="md:hidden flex items-center justify-between px-4 py-3 flex-shrink-0 bg-white border-b">
-            <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-green-700">
-                <span className="text-base">🌿</span>
+    <ThemeProvider>
+      <ToastProvider>
+        {screen === 'login' ? (
+          <Login onLogin={handleLogin} />
+        ) : (
+          <div className="flex flex-col h-screen overflow-hidden bg-gray-50 dark:bg-gray-900">
+            {!online && (
+              <div className="flex items-center justify-center gap-2 py-2 text-xs font-bold text-white bg-red-500 animate-pulse">
+                📵 Offline — changes sync when reconnected
               </div>
-              <span className="font-black text-sm text-gray-900">Landscaper Jordan</span>
-              <span
-                className="px-2 py-0.5 rounded-full text-xs font-bold"
-                style={{ background: ROLES[role as keyof typeof ROLES].color + '20', color: ROLES[role as keyof typeof ROLES].color }}
-              >
-                {ROLES[role as keyof typeof ROLES].emoji} {ROLES[role as keyof typeof ROLES].label}
-              </span>
+            )}
+            <div className="md:hidden flex items-center justify-between px-4 py-3 flex-shrink-0 bg-white dark:bg-gray-800 border-b dark:border-gray-700">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-green-700">
+                  <span className="text-base">🌿</span>
+                </div>
+                <span className="font-black text-sm text-gray-900 dark:text-white">Landscaper Jordan</span>
+                <span
+                  className="px-2 py-0.5 rounded-full text-xs font-bold"
+                  style={{ background: ROLES[role as keyof typeof ROLES].color + '20', color: ROLES[role as keyof typeof ROLES].color }}
+                >
+                  {ROLES[role as keyof typeof ROLES].emoji} {ROLES[role as keyof typeof ROLES].label}
+                </span>
+              </div>
             </div>
+            <div className="flex flex-1 overflow-hidden">
+              <Sidebar page={page} navigate={navigate} role={role} onLogout={handleLogout} />
+              <div className="flex-1 flex flex-col overflow-hidden">{renderPage()}</div>
+            </div>
+            <BottomNav page={page} navigate={navigate} />
           </div>
-          <div className="flex flex-1 overflow-hidden">
-            <Sidebar page={page} navigate={navigate} role={role} onLogout={handleLogout} />
-            <div className="flex-1 flex flex-col overflow-hidden">{renderPage()}</div>
-          </div>
-          <BottomNav page={page} navigate={navigate} />
-        </div>
-      )}
-    </ToastProvider>
+        )}
+      </ToastProvider>
+    </ThemeProvider>
   )
 }

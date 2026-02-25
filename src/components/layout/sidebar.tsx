@@ -27,14 +27,14 @@ export function Sidebar({ page, navigate, role, onLogout }: SidebarProps) {
   const items = navItems.filter((i) => !i.roles || i.roles.includes(role))
 
   return (
-    <aside className="hidden md:flex flex-col w-64 border-r h-full bg-white">
-      <div className="p-4 border-b">
+    <aside className="hidden md:flex flex-col w-64 border-r h-full bg-white dark:bg-gray-800 dark:border-gray-700">
+      <div className="p-4 border-b dark:border-gray-700">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-green-700">
             <span className="text-xl">🌿</span>
           </div>
           <div>
-            <h1 className="font-black text-sm text-gray-900">Landscaper Jordan</h1>
+            <h1 className="font-black text-sm text-gray-900 dark:text-white">Landscaper Jordan</h1>
             <span
               className="px-2 py-0.5 rounded-full text-xs font-bold"
               style={{ background: ROLES[role as keyof typeof ROLES].color + '20', color: ROLES[role as keyof typeof ROLES].color }}
@@ -51,7 +51,7 @@ export function Sidebar({ page, navigate, role, onLogout }: SidebarProps) {
             onClick={() => navigate(item.id)}
             className={cn(
               'w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all',
-              page === item.id ? 'bg-green-50 text-green-700' : 'text-gray-500 hover:bg-gray-50'
+              page === item.id ? 'bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-400' : 'text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700'
             )}
           >
             <Icon name={item.icon} size={18} />
@@ -59,10 +59,10 @@ export function Sidebar({ page, navigate, role, onLogout }: SidebarProps) {
           </button>
         ))}
       </nav>
-      <div className="p-3 border-t">
+      <div className="p-3 border-t dark:border-gray-700">
         <button
           onClick={onLogout}
-          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-500 hover:bg-gray-50"
+          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700"
         >
           <Icon name="log-out" size={18} />
           Sign Out

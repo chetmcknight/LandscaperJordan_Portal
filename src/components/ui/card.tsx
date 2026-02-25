@@ -12,7 +12,7 @@ function Card({ className, hover = false, ...props }: CardProps) {
       className={cn(
         'rounded-xl p-4',
         hover && 'hover:shadow-lg hover:-translate-y-0.5 cursor-pointer transition-all duration-150',
-        'bg-white border border-gray-100',
+        'bg-white border border-gray-100 dark:bg-gray-800 dark:border-gray-700',
         className
       )}
       {...props}

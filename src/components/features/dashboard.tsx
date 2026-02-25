@@ -1,5 +1,6 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -8,8 +9,23 @@ import { Icon } from '@/components/ui/icon'
 import { DEMO_JOBS, DEMO_WORKERS, DEMO_CLIENTS, DEMO_INVOICES, COLORS, ROLES } from '@/lib/demo-data'
 import { useToast } from '@/components/providers/toast-provider'
 
+function getGreeting() {
+  const hour = new Date().getHours()
+  if (hour < 12) return 'Good morning'
+  if (hour < 17) return 'Good afternoon'
+  return 'Good evening'
+}
+
 export function Dashboard({ navigate, role }: { navigate: (page: string) => void; role: string }) {
   const { show } = useToast()
+  const [greeting, setGreeting] = useState(getGreeting())
+
+  useEffect(() => {
+    const updateGreeting = () => setGreeting(getGreeting())
+    updateGreeting()
+    const interval = setInterval(updateGreeting, 60000)
+    return () => clearInterval(interval)
+  }, [])
 
   const todayJobs = DEMO_JOBS.filter((j) => j.scheduled_date === 'Today')
   const totalRevenue = DEMO_INVOICES.filter((i) => i.status === 'paid').reduce((s, i) => s + i.amount, 0)
@@ -51,7 +67,7 @@ export function Dashboard({ navigate, role }: { navigate: (page: string) => void
     <div className="p-4 md:p-6 space-y-6 overflow-y-auto flex-1">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-black text-gray-900">Good morning, Jordan! 👋</h1>
+          <h1 className="text-2xl font-black text-gray-900">{greeting}, Jordan! 👋</h1>
           <p className="text-sm text-gray-500">Here's what's happening today</p>
         </div>
         <Button variant="secondary" icon={<Icon name="bell" size={16} />}>

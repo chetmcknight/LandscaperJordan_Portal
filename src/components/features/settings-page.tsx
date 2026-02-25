@@ -1,11 +1,11 @@
 'use client'
 
-import { useState } from 'react'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Icon } from '@/components/ui/icon'
 import { useToast } from '@/components/providers/toast-provider'
+import { useTheme } from '@/components/providers/theme-provider'
 
 interface ToggleProps {
   checked: boolean
@@ -28,7 +28,7 @@ function Toggle({ checked, onChange }: ToggleProps) {
 }
 
 export function SettingsPage() {
-  const [dark, setDark] = useState(false)
+  const { dark, toggleDark } = useTheme()
   const { show } = useToast()
 
   return (
@@ -45,7 +45,7 @@ export function SettingsPage() {
             <p className="font-medium text-gray-900">Dark Mode</p>
             <p className="text-xs text-gray-500">Switch between light and dark theme</p>
           </div>
-          <Toggle checked={dark} onChange={setDark} />
+          <Toggle checked={dark} onChange={toggleDark} />
         </div>
       </Card>
 
