@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
+import { createContext, useContext, useState, useEffect, useSyncExternalStore, ReactNode } from 'react'
 
 interface ThemeContextType {
   dark: boolean
@@ -9,24 +9,39 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
 
+function getServerSnapshot() {
+  return false
+}
+
+function subscribe(callback: () => void) {
+  window.addEventListener('storage', callback)
+  return () => window.removeEventListener('storage', callback)
+}
+
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [dark, setDark] = useState(false)
+  const dark = useSyncExternalStore(
+    subscribe,
+    () => {
+      if (typeof window === 'undefined') return false
+      return document.documentElement.classList.contains('dark')
+    },
+    getServerSnapshot
+  )
 
   useEffect(() => {
     const saved = localStorage.getItem('darkMode')
     if (saved !== null) {
-      setDark(saved === 'true')
-    } else {
-      setDark(window.matchMedia('(prefers-color-scheme: dark)').matches)
+      document.documentElement.classList.toggle('dark', saved === 'true')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.classList.add('dark')
     }
   }, [])
 
-  useEffect(() => {
-    document.documentElement.classList.toggle('dark', dark)
-    localStorage.setItem('darkMode', String(dark))
-  }, [dark])
-
-  const toggleDark = () => setDark((prev) => !prev)
+  const toggleDark = () => {
+    const newValue = !document.documentElement.classList.contains('dark')
+    document.documentElement.classList.toggle('dark', newValue)
+    localStorage.setItem('darkMode', String(newValue))
+  }
 
   return (
     <ThemeContext.Provider value={{ dark, toggleDark }}>

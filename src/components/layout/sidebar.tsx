@@ -3,6 +3,7 @@
 import { Icon } from '@/components/ui/icon'
 import { cn } from '@/lib/utils'
 import { ROLES } from '@/lib/demo-data'
+import { useTheme } from '@/components/providers/theme-provider'
 
 interface SidebarProps {
   page: string
@@ -25,6 +26,7 @@ const navItems = [
 
 export function Sidebar({ page, navigate, role, onLogout }: SidebarProps) {
   const items = navItems.filter((i) => !i.roles || i.roles.includes(role))
+  const { dark, toggleDark } = useTheme()
 
   return (
     <aside className="hidden md:flex flex-col w-64 border-r h-full bg-white dark:bg-gray-800 dark:border-gray-700">
@@ -59,7 +61,14 @@ export function Sidebar({ page, navigate, role, onLogout }: SidebarProps) {
           </button>
         ))}
       </nav>
-      <div className="p-3 border-t dark:border-gray-700">
+      <div className="p-3 border-t dark:border-gray-700 space-y-1">
+        <button
+          onClick={toggleDark}
+          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700"
+        >
+          <Icon name={dark ? 'sun' : 'moon'} size={18} />
+          {dark ? 'Light Mode' : 'Dark Mode'}
+        </button>
         <button
           onClick={onLogout}
           className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700"

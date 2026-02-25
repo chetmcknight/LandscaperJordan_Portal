@@ -98,7 +98,7 @@ export default function Home() {
             </div>
             <div className="flex flex-1 overflow-hidden">
               <Sidebar page={page} navigate={navigate} role={role} onLogout={handleLogout} />
-              <div className="flex-1 flex flex-col overflow-hidden">{renderPage()}</div>
+              <main className="flex-1 flex flex-col overflow-hidden bg-gray-50 dark:bg-gray-900">{renderPage()}</main>
             </div>
             <BottomNav page={page} navigate={navigate} />
           </div>
